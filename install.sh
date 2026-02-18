@@ -38,14 +38,16 @@ else
     echo "Attempting to install..."
 
     if [ "$machine" == "Linux" ]; then
-        # Try with sudo, but warn if it fails
-        if sudo -n true 2>/dev/null; then
+        # If running as root, use apt-get directly; otherwise try sudo
+        if [ "$(id -u)" -eq 0 ]; then
+            apt-get update -y
+            apt-get install -y "${missing_tools[@]}"
+        elif sudo -n true 2>/dev/null; then
             sudo apt-get update -y
             sudo apt-get install -y "${missing_tools[@]}"
         else
-            echo "Warning: sudo access required to install missing tools."
-            echo "Please ask your system administrator to install: ${missing_tools[*]}"
-            echo "Or install them manually in your user directory."
+            echo "Warning: root or sudo access required to install missing tools."
+            echo "Please install manually: ${missing_tools[*]}"
             exit 1
         fi
     elif [ "$machine" == "Mac" ]; then
