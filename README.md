@@ -1,6 +1,46 @@
 # Minimal Dotfiles
 
-Bare essentials: nice-looking terminal + development tools.
+Bare essentials: nice-looking terminal + development tools, with verl (RL library) support for RunPod GPU instances.
+
+## RunPod Quick Start
+
+Complete setup guide for a fresh RunPod GPU instance.
+
+**1. SSH into your instance** using the command from RunPod's Connect panel.
+
+**2. Clone this repo:**
+```bash
+git clone https://github.com/shomit505/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+```
+
+**3. Run base setup:**
+```bash
+bash install.sh    # installs zsh, oh-my-zsh, Claude Code, uv, HuggingFace CLI, pnpm
+bash deploy.sh     # links config files, optionally sets up GitHub + HuggingFace auth
+exec zsh           # start using the configured shell
+```
+
+**4. Set up verl:**
+```bash
+bash setup_verl.sh
+```
+This installs Miniconda (if needed), creates a `verl` conda environment, and installs verl along with all dependencies (vLLM, FlashAttention, etc.). **Expect 20-40 minutes** on a fresh instance.
+
+**5. Activate verl and start working:**
+```bash
+conda activate verl
+cd ~/verl
+```
+
+**Notes:**
+- `install.sh` and `setup_verl.sh` only need to run once per instance.
+- `deploy.sh` can be re-run anytime (e.g. after moving the repo).
+- RunPod instances are ephemeral — repeat this on each new pod.
+- For data/model persistence across pod restarts, use a RunPod Network Volume mounted at `/workspace`.
+- verl requires **CUDA >= 12.8** — on RunPod, select a template with CUDA 12.8+ (e.g. RunPod PyTorch 2.x images).
+
+---
 
 ## Install vs Deploy
 
@@ -55,9 +95,10 @@ exec zsh        # Start using it
 
 ```
 dotfiles/
-├── install.sh              # Installs software
+├── install.sh              # Installs software (zsh, Claude Code, uv, pnpm, etc.)
 ├── deploy.sh               # Links configs to home directory
 ├── setup_github.sh         # GitHub authentication setup
+├── setup_verl.sh           # verl RL library setup (conda env + dependencies)
 ├── config/
 │   ├── zshrc.sh            # ZSH config (theme + history + git completion)
 │   ├── aliases.sh          # Custom aliases
