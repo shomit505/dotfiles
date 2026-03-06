@@ -69,6 +69,18 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
         ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 fi
 
+# Install Node.js if not already installed (required for Claude Code and pnpm packages)
+if ! command -v node &> /dev/null; then
+    echo ""
+    echo "Installing Node.js..."
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+    if [ "$(id -u)" -eq 0 ]; then
+        apt-get install -y nodejs
+    else
+        sudo apt-get install -y nodejs
+    fi
+fi
+
 # Install Claude Code CLI if not already installed
 if ! command -v claude &> /dev/null; then
     echo ""
