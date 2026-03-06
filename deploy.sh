@@ -66,6 +66,14 @@ else
     echo "If you just ran install.sh, try restarting your shell and running deploy.sh again"
 fi
 
+# Setup Tinker API configuration (optional)
+echo ""
+echo "--- Tinker API Setup (Optional) ---"
+read -p "Configure Tinker API key? (y/n): " configure_tinker
+if [[ "$configure_tinker" =~ ^[Yy]$ ]]; then
+    bash "$SCRIPT_DIR/setup_tinker.sh"
+fi
+
 echo ""
 echo "========================================="
 echo "  Deploying Configuration Files..."

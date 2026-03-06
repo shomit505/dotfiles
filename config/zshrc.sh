@@ -65,6 +65,11 @@ if [[ -f "$HOME/.hf_config.sh" ]]; then
     source "$HOME/.hf_config.sh"
 fi
 
+# Load Tinker API config if it exists (machine-specific)
+if [[ -f "$HOME/.tinker_config.sh" ]]; then
+    source "$HOME/.tinker_config.sh"
+fi
+
 # Check for tool updates (once per day, with interactive prompt)
 if [[ -f "$CONFIG_DIR/auto_update_check.sh" ]]; then
     source "$CONFIG_DIR/auto_update_check.sh"
